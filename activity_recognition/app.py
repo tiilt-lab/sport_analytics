@@ -17,12 +17,11 @@ from keras.utils import to_categorical
 import tensorflow as tf
 
 global graph
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+from flask import Flask
 
-graph = tf.get_default_graph()
+# graph = tf.get_default_graph()
+graph = tf.compat.v1.get_default_graph
 app = Flask(__name__)
-socketio = SocketIO(app)
 
 class LSTMModel():
 
@@ -57,7 +56,7 @@ class LSTMModel():
         if save_streams:
             self.make_csvs(stream_filenames, datasets)
 
-        ###########################################################################
+        ########################################################################
         # group streams into windows
         # window_size = 64 # 64 = 1sec windows
         # overlap_size = 16
@@ -235,8 +234,6 @@ class LSTMModel():
                         print()
         print("total time elapsed", int((time.time() - start_time) / 60), " min")
 
-ids = { }
-
 
 @app.route('/')
 @app.route('/home')
@@ -258,39 +255,34 @@ def train_model():
         return output
 
 
-@app.route('/store/<data>')
-def store(data):
-    print(data)
+@app.route('/store/<t>/<id>/<data_type>/<x>/<y>/<z>')
+def store(t, id, data_type, x, y, z):
+    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
+
+    with open('time_stamped_data.csv', 'a+') as f:
+        f.write("{},{},{},{},{},{}\n".format(t, id, data_type, x, y, z))
+    return "{},{},{},{},{},{}\n".format(t, id, data_type, x, y, z)
+
+# Classify - run model return activity
+# Agg - what do we want?
+# Check in - get uid
+# TODO switch to list of strings
+
+
+'''
+@app.route('/store/<>')
+def store(data_string):
+    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
 
     with open('new_data.csv', 'a+') as f:
-        data_list = data.split(',')
-        csvWriter = csv.writer(f, delimiter=',')
-        csvWriter.writerow(data_list)
+        f.write("{},{},{}\n".format(x, y, z))
+    return "{},{},{}\n".format(x, y, z)
 
-    return str(data_list)
+@app.route('/store/<x>/<y>/<z>')
+def store(x, y, z):
+    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
 
-
-# @socketio.on('echo', namespace='/ws')
-# def test_message(message):
-#     emit('my response', {'data': message['ws']})
-
-
-# @socketio.on('broadcast', namespace='/ws')
-# def test_message(message):
-#     emit('my response', {'data': message['data']}, broadcast=True)
-
-
-# @socketio.on('connect', namespace='/ws')
-# def test_connect():
-#     emit('my response', {'data': 'Connected'})
-
-
-# @socketio.on('disconnect', namespace='/ws')
-# def test_disconnect():
-#     print('Client disconnected')
-
-
-if __name__ == '__main__':
-    # app.run(reload=True)
-    app.run(debug=True, host='0.0.0.0')
-    # socketio.run(app)
+    with open('new_data.csv', 'a+') as f:
+        f.write("{},{},{}\n".format(x, y, z))
+    return "{},{},{}\n".format(x, y, z)
+'''
