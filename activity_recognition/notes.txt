@@ -1,0 +1,28 @@
+Good
+	watch apps
+	training on server
+
+Not so good
+	scaleability
+	Fitbit
+		requires phone for internet connection
+		size limit (10 Mb at start, 15 total)
+		request cap (150 per day per user)
+		can't have duplicate trackers (max of two)
+		versa lite doesn't support developer bridge
+		works in simulator
+
+	WearOS
+		may require phone for internet connection
+		works on device
+		exploring scalability
+
+	Server solution
+		training on demand
+		will handle storage, classification, and aggregation
+
+Scholarships
+	nsf -
+	grfp -
+	MS -
+	Google -
