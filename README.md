@@ -1,7 +1,10 @@
 # sport_analytics
 ### The home of the SA Team's code and documentation.
 ***Documentation goes in the README at the root of each project folder.***
+
 ***If you add folders and files, provide file descriptions and add the folder path below.***
+
+***All python modules should have a requirements.txt files***
 
 
 
