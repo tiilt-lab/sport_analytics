@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
-import plotly.express as px
+# import plotly.express as px
 
 
 def get_data_object(fname='./Session_1-13-20.txt'):
@@ -48,6 +48,14 @@ def make_plot(sample, id='b80d174ba44f5fb1', dtype='Accelerometer'):
     fig.add_trace(go.Scatter(x=x, y=xvals, mode='lines+markers', name='x', line_shape='spline'))
     fig.add_trace(go.Scatter(x=x, y=yvals, mode='lines+markers', name='y', line_shape='spline'))
     fig.add_trace(go.Scatter(x=x, y=zvals, mode='lines+markers', name='z', line_shape='spline'))
+
+    fig.update_layout(
+        title={
+            'text': id,
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})
     fig.show()
 
 
@@ -58,5 +66,5 @@ def animate_plot():
 
 if __name__ == '__main__':
     sample = get_data_object()
-    # make_plot(sample, id='9d303d046704f226', dtype='Gyroscope')
-    animate_plot()
+    make_plot(sample, id='0d7c6d6867494c13', dtype='Gyroscope')
+    # animate_plot()

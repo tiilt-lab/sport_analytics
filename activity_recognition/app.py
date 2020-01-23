@@ -20,7 +20,7 @@ global graph
 from flask import Flask
 
 # graph = tf.get_default_graph()
-graph = tf.compat.v1.get_default_graph
+graph = tf.compat.v1.get_default_graph()
 app = Flask(__name__)
 
 class LSTMModel():
