@@ -2,6 +2,7 @@
 import os
 import csv
 import time
+import uuid
 # import argparse
 from statistics import mean, mode
 
@@ -22,6 +23,7 @@ from flask import Flask
 # graph = tf.get_default_graph()
 graph = tf.compat.v1.get_default_graph()
 app = Flask(__name__)
+
 
 class LSTMModel():
 
@@ -235,12 +237,29 @@ class LSTMModel():
         print("total time elapsed", int((time.time() - start_time) / 60), " min")
 
 
+id_log = []
+
+
 @app.route('/')
 @app.route('/home')
 def index():
     # out = train(16, 0.5, 0.6, False, False)
     # return "<h1>" + out + "</h1>"
     return "<p>Hello!</p> <a href=\"/train\">Train Model</a>"
+
+
+@app.route('/new_id')
+def new_id():
+    new_id = uuid.uuid4().hex[:4]
+    id_log.append(new_id)
+    return new_id
+
+
+# @app.route('/rm_id')
+# def rm_id():
+#     new_id = uuid.uuid4().hex[:4]
+#     id_log.append(new_id)
+#     return new_id
 
 
 @app.route('/train')
@@ -255,18 +274,17 @@ def train_model():
         return output
 
 
-@app.route('/store/<t>/<id>/<data_type>/<x>/<y>/<z>')
-def store(t, id, data_type, x, y, z):
+@app.route('/store/<id>/<label>/<t>/<data_type>/<x>/<y>/<z>')
+def store(id, label, t, data_type, x, y, z):
     # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
 
-    with open('time_stamped_data.csv', 'a+') as f:
-        f.write("{},{},{},{},{},{}\n".format(t, id, data_type, x, y, z))
-    return "{},{},{},{},{},{}\n".format(t, id, data_type, x, y, z)
+    with open('collection/{}_data.csv'.format(id), 'a+') as f:
+        f.write("{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z))
+    return "{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z)
 
 # Classify - run model return activity
 # Agg - what do we want?
-# Check in - get uid
-# TODO switch to list of strings
+
 
 
 '''
