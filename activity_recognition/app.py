@@ -276,8 +276,6 @@ def train_model():
 
 @app.route('/store/<id>/<label>/<t>/<data_type>/<x>/<y>/<z>')
 def store(id, label, t, data_type, x, y, z):
-    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
-
     with open('collection/{}_data.csv'.format(id), 'a+') as f:
         f.write("{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z))
     return "{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z)

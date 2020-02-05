@@ -1,9 +1,25 @@
-import plotly.graph_objects as go
+
 import numpy as np
 # import plotly.express as px
 
 
 def get_data_object(fname='./Session_1-13-20.txt'):
+    """
+    data_object
+        user_id/
+            dtype/
+                x/
+                    [...]
+                y/
+                    [...]
+                z/
+                    [...]
+            dtype/
+                ...
+        user_id/
+        ...
+    """
+
     data = {}
 
     # open the session file by name
@@ -64,7 +80,24 @@ def animate_plot():
     # try plotly express animations with dataframes
 
 
+def to_csvs(data_object):
+    for id in data_object.keys():
+        for dtype in data_object[id].keys():
+            with open(f"{id}_{dtype}.csv", 'a+') as f:
+
+                xvals = data_object[id][dtype]['x']
+                yvals = data_object[id][dtype]['y']
+                zvals = data_object[id][dtype]['z']
+
+
+                for index in range(len(xvals)):
+                    f.writelines(f"{id}, {xvals[index]}, {yvals[index]}, {zvals[index]}\n")
+
+
+
 if __name__ == '__main__':
     sample = get_data_object()
-    make_plot(sample, id='0d7c6d6867494c13', dtype='Gyroscope')
+    to_csvs(sample)
+    # print(sample['0d7c6d6867494c13'].keys())
+    # make_plot(sample, id='0d7c6d6867494c13', dtype='Gyroscope')
     # animate_plot()
