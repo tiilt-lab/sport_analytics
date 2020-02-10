@@ -248,6 +248,7 @@ def index():
     return "<p>Hello!</p> <a href=\"/train\">Train Model</a>"
 
 
+# Change this to on watch id
 @app.route('/new_id')
 def new_id():
     new_id = uuid.uuid4().hex[:4]
@@ -274,31 +275,18 @@ def train_model():
         return output
 
 
+@app.route('/echo/<msg>')
+def echo(msg):
+    print(msg)
+    return msg
+
+
 @app.route('/store/<id>/<label>/<t>/<data_type>/<x>/<y>/<z>')
 def store(id, label, t, data_type, x, y, z):
     with open('collection/{}_data.csv'.format(id), 'a+') as f:
         f.write("{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z))
     return "{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z)
 
-# Classify - run model return activity
-# Agg - what do we want?
 
-
-
-'''
-@app.route('/store/<>')
-def store(data_string):
-    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
-
-    with open('new_data.csv', 'a+') as f:
-        f.write("{},{},{}\n".format(x, y, z))
-    return "{},{},{}\n".format(x, y, z)
-
-@app.route('/store/<x>/<y>/<z>')
-def store(x, y, z):
-    # time, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
-
-    with open('new_data.csv', 'a+') as f:
-        f.write("{},{},{}\n".format(x, y, z))
-    return "{},{},{}\n".format(x, y, z)
-'''
+if __name__ == '__main__':
+    app.run(debug=True, threaded=False, host="10.105.190.182")
