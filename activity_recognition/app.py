@@ -3,6 +3,9 @@ import os
 import csv
 import time
 import uuid
+import json
+import random
+from datetime import datetime
 # import argparse
 from statistics import mean, mode
 
@@ -18,11 +21,13 @@ from keras.utils import to_categorical
 import tensorflow as tf
 
 global graph
-from flask import Flask
+from flask import Flask, Response, render_template
 
 # graph = tf.get_default_graph()
 graph = tf.compat.v1.get_default_graph()
 app = Flask(__name__)
+user = ""
+dtype = ""
 
 
 class LSTMModel():
@@ -237,9 +242,6 @@ class LSTMModel():
         print("total time elapsed", int((time.time() - start_time) / 60), " min")
 
 
-id_log = []
-
-
 @app.route('/')
 @app.route('/home')
 def index():
@@ -248,19 +250,10 @@ def index():
     return "<p>Hello!</p> <a href=\"/train\">Train Model</a>"
 
 
-# Change this to on watch id
 @app.route('/new_id')
 def new_id():
     new_id = uuid.uuid4().hex[:4]
-    id_log.append(new_id)
     return new_id
-
-
-# @app.route('/rm_id')
-# def rm_id():
-#     new_id = uuid.uuid4().hex[:4]
-#     id_log.append(new_id)
-#     return new_id
 
 
 @app.route('/train')
@@ -288,5 +281,42 @@ def store(id, label, t, data_type, x, y, z):
     return "{},{},{},{},{},{},{}\n".format(id, label, t, data_type, x, y, z)
 
 
+@app.route('/chart/<id>')
+def chart(id):
+    global user
+    user = id
+    return render_template('./index.html', value=id)
+
+
+@app.route('/chart-data')
+def chart_data():
+    global user, dtype
+    def generate_random_data():
+        while True:
+            json_data = json.dumps(
+                {'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                 'value': random.random() * 100})
+            yield f"data:{json_data}\n\n"
+            time.sleep(1)
+
+    def send_csv_data():
+        print(f"***{user}***")
+        if user == "":
+            return
+        with open(f"../dev/session_parsing/{user}_Accelerometer.csv", 'r+') as f:
+            for line in f:
+                line_info = line.split(',')
+                json_data = json.dumps(
+                    {'time': line_info[0],
+                     # 'time': str(datetime.fromtimestamp(int(line_info[0]))),
+                     'value0': [line_info[1]],
+                     'value1': line_info[2],
+                     'value2': line_info[3], })
+                yield f"data:{json_data}\n\n"
+                time.sleep(0.1)
+
+    return Response(send_csv_data(), mimetype='text/event-stream')
+
+
 if __name__ == '__main__':
-    app.run(debug=True, threaded=False, host="10.105.190.182")
+    app.run(debug=True, threaded=True, host="10.105.190.182")
