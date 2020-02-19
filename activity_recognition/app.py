@@ -319,4 +319,4 @@ def chart_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, host="10.105.190.182")
+    app.run(debug=True, threaded=True, host="0.0.0.0")
