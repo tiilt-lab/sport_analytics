@@ -10,15 +10,18 @@ from datetime import datetime
 from statistics import mean, mode
 
 # lstm model
-from numpy import std
-from numpy import dstack
-from pandas import read_csv
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import LSTM
-from keras.utils import to_categorical
-import tensorflow as tf
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore",category=FutureWarning)
+    from numpy import std
+    from numpy import dstack
+    from pandas import read_csv
+    from keras.models import Sequential
+    from keras.layers import Dense
+    from keras.layers import Dropout
+    from keras.layers import LSTM
+    from keras.utils import to_categorical
+    import tensorflow as tf
 
 global graph
 from flask import Flask, Response, render_template
@@ -253,6 +256,7 @@ def index():
 @app.route('/new_id')
 def new_id():
     new_id = uuid.uuid4().hex[:4]
+    print(new_id)
     return new_id
 
 

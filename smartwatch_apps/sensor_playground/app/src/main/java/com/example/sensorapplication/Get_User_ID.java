@@ -37,7 +37,10 @@ public class Get_User_ID extends WearableActivity {
         getUserId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // lab server
                 String output = "http://165.124.181.163:5000/new_id";
+                // dev server
+                // String output = "http://192.168.43.192:5000/new_id";
                 isClicked = true;
                 new JavaGetRequest().execute(output);
 

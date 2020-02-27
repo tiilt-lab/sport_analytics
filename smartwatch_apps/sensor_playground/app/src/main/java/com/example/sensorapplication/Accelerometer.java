@@ -160,13 +160,19 @@ public class Accelerometer extends WearableActivity {
 
             }
 
+            // code goes here
             @Override
             public void onSensorChanged(SensorEvent event) {
-                //just set the values to a textview so they can be displayed.
+                // just set the values to a textview so they can be displayed.
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
                 final String[] output = new String[2];
+
+                float k = 0;
+                String nums;
+                String url_value_string = "";
+                String msg = "";
 
                 if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
 
@@ -174,117 +180,70 @@ public class Accelerometer extends WearableActivity {
                     int isY = getIntent().getIntExtra("Y_is_on", 0);
                     int isZ = getIntent().getIntExtra("Z_is_on", 0);
 
-                    if(isX == 1 && isY ==0 && isZ == 0){
-                        String my_msg = "Accelerometer" + "\n x: " + String.valueOf(event.values[0]);
-                        mxyz.setText(my_msg);
-                        float k = event.values[0];
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-
-                        String url_value_string = Float.toString(x)+"/"+"0/0";
-
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
-
-
+                    if(isX == 1 && isY == 0 && isZ == 0){
+                        msg = "Acc" + "\n x: " + String.valueOf(event.values[0]);
+                        k = event.values[0];
+                        url_value_string = Float.toString(x)+"/"+"0/0";
                     }
 
                     else if(isX == 0 && isY ==1 && isZ == 0){
-                        String my_msg = "Accelerometer" + "\n y: " + String.valueOf(event.values[1]);
-                        mxyz.setText(my_msg);
-                        float k = event.values[0];
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-                        String url_value_string = "0/"+Float.toString(y)+"/0";
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
-
-
+                        msg = "Acc" + "\n y: " + String.valueOf(event.values[1]);
+                        k = event.values[0];
+                        url_value_string = "0/"+Float.toString(y)+"/0";
                     }
 
                     else if(isX == 0 && isY ==0 && isZ == 1){
-                        String my_msg = "Accelerometer" + "\n z: " + String.valueOf(event.values[2]);
-                        mxyz.setText(my_msg);
-                        float k = event.values[2];
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        String url_value_string = "0/0/"+Float.toString(event.values[2]);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
+                        msg = "Acc" + "\n z: " + String.valueOf(event.values[2]);
+                        k = event.values[2];
+                        url_value_string = "0/0/"+Float.toString(event.values[2]);
                     }
                     else if(isX == 1 && isY ==1 && isZ == 1){
-                        String msg = "Accelerometer" + "\n x: " + String.valueOf(event.values[0]) +
+                        msg = "Acc" + "\n x: " + String.valueOf(event.values[0]) +
                                 "\n y: " + String.valueOf(event.values[1]) +
-                                "\n z: " + String.valueOf(event.values[2]); //+
+                                "\n z: " + String.valueOf(event.values[2]);
 
-                        mxyz.setText(msg);
-                        double k = Math.sqrt(((event.values[0] * event.values[0]) + (event.values[1] * event.values[1]) + (event.values[2] * event.values[2])));
-                        String nums = Double.toString(k);
-                        nums = df.format(k);
-                        mTextView.setText(nums);
-                        String j = String.valueOf(event.values[0])+"/"+String.valueOf(event.values[1])+"/"+String.valueOf(event.values[2]);
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+j;
-
+                        k = (float) Math.sqrt(((event.values[0] * event.values[0]) + (event.values[1] * event.values[1]) + (event.values[2] * event.values[2])));
+                        url_value_string = String.valueOf(event.values[0])+"/"+String.valueOf(event.values[1])+"/"+String.valueOf(event.values[2]);
                     }
                     else if(isX == 1 && isY ==1 && isZ == 0){
-                        String msg = "Accelerometer" + "\n x: " + String.valueOf(event.values[0]) +
-                                "\n y: " + String.valueOf(event.values[1]); //+
+                        msg = "Acc" + "\n x: " + String.valueOf(event.values[0]) +
+                                "\n y: " + String.valueOf(event.values[1]);
 
-                        mxyz.setText(msg);
-                        float k = (float) Math.sqrt(((event.values[0] * event.values[0]) + (event.values[1] * event.values[1])));
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-
-                        String url_value_string = Float.toString(x)+"/"+Float.toString(y)+"/0";
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
-
-
+                        k = (float) Math.sqrt(((event.values[0] * event.values[0]) + (event.values[1] * event.values[1])));
+                        url_value_string = Float.toString(x)+"/"+Float.toString(y)+"/0";
                     }
                     else if(isX == 1 && isY ==0 && isZ == 1){
-                        String msg = "Accelerometer" + "\n x: " + String.valueOf(event.values[0]) +
+                        msg = "Acc" + "\n x: " + String.valueOf(event.values[0]) +
                                 "\n z: " + String.valueOf(event.values[2]);
-                        mxyz.setText(msg);
 
-                        float k = (float) Math.sqrt(((event.values[0] * event.values[0]) + (event.values[2] * event.values[2])));
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-
-                        String url_value_string = Float.toString(x)+"/0/"+Float.toString(z);
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
-
-
-
+                        k = (float) Math.sqrt(((event.values[0] * event.values[0]) + (event.values[2] * event.values[2])));
+                        url_value_string = Float.toString(x)+"/0/"+Float.toString(z);
                     }
                     else if(isX == 0 && isY ==1 && isZ == 1){
-                        String msg = "Accelerometer" + "\n y: " + String.valueOf(event.values[1]) +
-                                "\n z: " + String.valueOf(event.values[2]); //+
-                        mxyz.setText(msg);
+                        msg = "Acc" + "\n y: " + String.valueOf(event.values[1]) +
+                                "\n z: " + String.valueOf(event.values[2]);
 
-                        float k = (float) Math.sqrt(((event.values[1] * event.values[1]) + (event.values[2] * event.values[2])));
-                        String nums = df.format(k);
-                        mTextView.setText(nums);
-
-                        String url_value_string = "0/"+Float.toString(y)+"/"+Float.toString(z);
-                        long unixTime = System.currentTimeMillis() / 1000L;
-                        String time = Long.toString(unixTime);
-                        output[0] = "http://165.124.181.163:5000"+"/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Accelerometer/"+url_value_string;
-
+                        k = (float) Math.sqrt(((event.values[1] * event.values[1]) + (event.values[2] * event.values[2])));
+                        url_value_string = "0/"+Float.toString(y)+"/"+Float.toString(z);
                     }
+
+                    mxyz.setText(msg);
+                    nums = df.format(k);
+                    mTextView.setText(nums);
+                    long unixTime = System.currentTimeMillis() / 1000L;
+                    String time = Long.toString(unixTime);
+
+                    // Lab Server
+                    output[0] = "http://165.124.181.163:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Acc/"+url_value_string;
+
+                    // Dev Server
+                    // output[0] = "http://192.168.43.192:5000/store/"+UserId+"/"+activityType+"-"+hand+"/"+time+"/Acc/"+url_value_string;
 
 
                     //new CallAPI().execute(output);
                     //new JavaPostRequest().execute(output);
                     if(on_off ==1) {
-                       new JavaGetRequest().execute(output);
+                        new JavaGetRequest().execute(output);
                     }
 
                 }
