@@ -71,8 +71,9 @@ public class JavaGetRequest extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String feed) {
-        if (Get_User_ID.isClicked == true){
+        if (Get_User_ID.isClicked){
             Get_User_ID.mUserId.setText(feed);
+            Get_User_ID.next_page.setEnabled(true);
             Get_User_ID.myId = feed;
             Get_User_ID.isClicked = false;
         }

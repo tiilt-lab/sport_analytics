@@ -30,7 +30,7 @@ public class Custom_Label extends WearableActivity {
         mUserId = (TextView) findViewById(R.id.user_id);
         mUserId.setText(UserId);
         mTextView = (TextView) findViewById(R.id.custom_label);
-        mTextView.setText(UserId);
+        mTextView.setText("Custom Label");
         edit = (Button) findViewById(R.id.edit_label);
         confirm = (Button) findViewById(R.id.confirm_label);
         activityType =  getIntent().getStringExtra("Label_type");

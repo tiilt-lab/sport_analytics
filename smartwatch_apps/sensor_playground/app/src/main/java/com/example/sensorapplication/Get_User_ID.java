@@ -17,7 +17,7 @@ public class Get_User_ID extends WearableActivity {
     public static TextView mUserId;
     public static Boolean isClicked;
     private Button getUserId;
-    private Button next_page;
+    public static Button next_page;
     public static String myId;
     private JavaGetRequest myTask;
 
@@ -30,6 +30,7 @@ public class Get_User_ID extends WearableActivity {
         getUserId = (Button) findViewById(R.id.get_id);
         next_page = (Button) findViewById(R.id.next);
         mUserId = (TextView) findViewById(R.id.user_id);
+        next_page.setEnabled(false);
         isClicked = false;
         mUserId.setText("USER ID");
         myId = "";
