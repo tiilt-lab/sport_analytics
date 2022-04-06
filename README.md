@@ -17,5 +17,5 @@
     		indoor_location/   : indoor location tracking app using estimote beacons
     		sensor_playground/ : overview app of on-board smart-watch sensors
     		tag_the_flag/      : capture the flag style game using estimote beacons and smart-watches
-        wearables/ : home for all wearables
-        interaces/ : home for all interfaces
+       wearables/ : home for all wearables
+       interaces/ : home for all interfaces
