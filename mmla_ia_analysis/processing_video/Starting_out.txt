@@ -1,0 +1,21 @@
+Start by downloading this link to your computer: https://github.com/tensorflow/tfjs-models 
+
+I updated the tfjs-models/pose-detection/demos/upload_video/src/index.js file to the one on this github. 
+
+To run the model on the data: 
+
+If you want to run any of the demos locally, follow these steps:
+
+Go to the demo folder, e.g. `cd upload_video`
+
+Remove cache etc. `rm -rf .cache dist node_modules`
+
+Build dependency. `yarn build-dep`
+
+Install dependencies. `yarn`
+
+Run the demo. `yarn watch`
+
+The demo runs at localhost:1234. (Remember to provide URL model parameter e. g. localhost:1234/?model=movenet)
+
+It will produce a json of 851 rows, which you can update in the index.js file.
